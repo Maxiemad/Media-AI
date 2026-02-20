@@ -14,10 +14,7 @@ import { Toaster } from "@/components/ui/sonner";
 
 function App() {
   return (
-    <div className="relative">
-      {/* Chatbot rendered at root level for proper fixed positioning */}
-      <Chatbot />
-      
+    <>
       <SmoothScroll>
         <div className="relative min-h-screen bg-[#030305]">
           <NoiseOverlay />
@@ -49,7 +46,10 @@ function App() {
           <Toaster position="bottom-right" />
         </div>
       </SmoothScroll>
-    </div>
+      
+      {/* Chatbot uses Portal - renders directly to document.body */}
+      <Chatbot />
+    </>
   );
 }
 
