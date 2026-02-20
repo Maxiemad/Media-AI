@@ -181,6 +181,161 @@
     background-clip: text;
 }
 
+/* 3D Hero Title */
+.hero-title-3d {
+    background: linear-gradient(180deg, #00F0FF 0%, #7000FF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 
+        0 0 40px rgba(0, 240, 255, 0.5),
+        0 0 80px rgba(112, 0, 255, 0.3);
+    transform-style: preserve-3d;
+}
+
+/* 3D Play Button */
+.play-button-3d {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: rgba(0, 240, 255, 0.15);
+    border: 2px solid var(--aether-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transform-style: preserve-3d;
+}
+
+.play-button-3d:hover {
+    transform: translateZ(20px) scale(1.1);
+    box-shadow: 
+        0 10px 40px rgba(0, 240, 255, 0.4),
+        0 0 60px rgba(0, 240, 255, 0.2);
+}
+
+/* 3D Button */
+.btn-3d {
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-3d:hover {
+    transform: translateZ(10px) translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0, 240, 255, 0.3);
+}
+
+/* 3D Feature Card */
+.feature-card-3d {
+    position: relative;
+    background: rgba(10, 10, 10, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transform-style: preserve-3d;
+    transition: transform 0.2s ease-out, box-shadow 0.3s ease;
+}
+
+.feature-card-3d:hover {
+    box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.5),
+        0 0 30px rgba(0, 240, 255, 0.1);
+}
+
+/* 3D Text Subtle */
+.text-3d-subtle {
+    text-shadow: 
+        2px 2px 0 rgba(0, 240, 255, 0.1),
+        4px 4px 0 rgba(112, 0, 255, 0.05);
+}
+
+/* 3D Stat Block */
+.stat-3d {
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease;
+}
+
+.stat-3d:hover {
+    transform: translateZ(20px) scale(1.05);
+}
+
+/* 3D Countdown Digit */
+.countdown-digit-3d {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3rem, 10vw, 8rem);
+    font-weight: 800;
+    line-height: 1;
+    background: linear-gradient(180deg, #00F0FF 0%, #7000FF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 60px rgba(0, 240, 255, 0.5);
+}
+
+/* 3D Countdown Block */
+.countdown-block-3d {
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease;
+}
+
+.countdown-block-3d:hover {
+    transform: translateZ(30px) scale(1.05);
+}
+
+/* 3D Gallery Grid */
+.bento-grid-3d {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 200px);
+    gap: 1.5rem;
+    perspective: 1000px;
+}
+
+/* 3D Gallery Item */
+.gallery-item-3d {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+    cursor: pointer;
+    transform-style: preserve-3d;
+}
+
+.gallery-item-3d img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.gallery-item-3d:hover img {
+    transform: translateZ(10px) scale(1.05);
+}
+
+.gallery-overlay-3d {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    transform-style: preserve-3d;
+}
+
+.gallery-item-3d:hover .gallery-overlay-3d {
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+    .bento-grid-3d {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
+    .bento-item-1, .bento-item-2, .bento-item-3, 
+    .bento-item-4, .bento-item-5 {
+        grid-column: span 1;
+        grid-row: span 1;
+        min-height: 250px;
+    }
+}
+
 /* Line Decorations */
 .line-decoration {
     width: 60px;
