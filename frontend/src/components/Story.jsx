@@ -1,5 +1,3 @@
-import { motion } from 'framer-motion';
-
 const STORY_IMAGE = "https://images.pexels.com/photos/7662608/pexels-photo-7662608.jpeg";
 const FEATURE_IMAGE = "https://images.pexels.com/photos/18068778/pexels-photo-18068778.png";
 
@@ -14,14 +12,8 @@ export const Story = () => {
       <div className="aether-container">
         {/* First Block - Image Left, Text Right */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-32">
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6 }}
-            className="relative"
-          >
-            <div className="absolute -inset-4 bg-gradient-to-r from-cyan-500/20 to-violet-500/20 rounded-3xl blur-2xl" />
+          <div className="relative">
+            <div className="absolute -inset-4 bg-gradient-to-r from-cyan-500/10 to-violet-500/10 rounded-3xl blur-xl" />
             <img
               src={STORY_IMAGE}
               alt="Cinematic Astronaut"
@@ -29,22 +21,10 @@ export const Story = () => {
               data-testid="story-image-1"
               loading="lazy"
             />
-            <motion.div
-              initial={{ width: 0 }}
-              whileInView={{ width: '60%' }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3, duration: 0.6 }}
-              className="absolute bottom-8 left-8 h-1 bg-gradient-to-r from-cyan-400 to-transparent"
-            />
-          </motion.div>
+            <div className="absolute bottom-8 left-8 h-1 w-[60%] bg-gradient-to-r from-cyan-400 to-transparent" />
+          </div>
 
-          <motion.div 
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
-          >
+          <div className="space-y-8">
             <p className="text-xs tracking-[0.3em] uppercase text-violet-400">
               The Vision
             </p>
@@ -84,18 +64,12 @@ export const Story = () => {
                 <p className="text-sm text-gray-500 uppercase tracking-wider">Possibilities</p>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
 
         {/* Second Block - Text Left, Image Right */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8 order-2 lg:order-1"
-          >
+          <div className="space-y-8 order-2 lg:order-1">
             <p className="text-xs tracking-[0.3em] uppercase text-cyan-400">
               The Technology
             </p>
@@ -119,24 +93,16 @@ export const Story = () => {
               </p>
             </div>
 
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+            <button
               className="btn-secondary text-sm mt-4"
               data-testid="learn-more-btn"
             >
               Explore the Tech
-            </motion.button>
-          </motion.div>
+            </button>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6 }}
-            className="relative order-1 lg:order-2"
-          >
-            <div className="absolute -inset-4 bg-gradient-to-l from-cyan-500/20 to-violet-500/20 rounded-3xl blur-2xl" />
+          <div className="relative order-1 lg:order-2">
+            <div className="absolute -inset-4 bg-gradient-to-l from-cyan-500/10 to-violet-500/10 rounded-3xl blur-xl" />
             <img
               src={FEATURE_IMAGE}
               alt="Abstract 3D Shape"
@@ -145,7 +111,7 @@ export const Story = () => {
               loading="lazy"
             />
             <div className="absolute -bottom-6 -right-6 w-32 h-32 border border-cyan-500/30 rounded-full animate-rotate-slow" />
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

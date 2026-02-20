@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import { Brain, Cpu, Sparkles, Zap, Globe, Shield } from 'lucide-react';
 
 const features = [
@@ -41,76 +40,36 @@ const features = [
 ];
 
 export const Features = () => {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.08 }
-    }
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.4, ease: "easeOut" }
-    }
-  };
-
   return (
     <section 
       className="relative py-32 overflow-hidden"
       data-testid="features-section"
     >
-      {/* Background Gradient */}
       <div className="absolute inset-0 spotlight opacity-50" />
 
       <div className="aether-container">
         {/* Section Header */}
         <div className="text-left mb-20 max-w-3xl">
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-xs tracking-[0.3em] uppercase text-cyan-400 mb-4"
-          >
+          <p className="text-xs tracking-[0.3em] uppercase text-cyan-400 mb-4">
             Capabilities
-          </motion.p>
-          <motion.h2
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
+          </p>
+          <h2
             className="section-title text-4xl md:text-6xl mb-6"
             data-testid="features-title"
           >
             Built for the <br />
             <span className="text-cyan-400">Impossible</span>
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="section-subtitle text-lg"
-          >
+          </h2>
+          <p className="section-subtitle text-lg">
             AetherX redefines what AI can achieve. Six core innovations working in harmony to transform your ideas into reality.
-          </motion.p>
+          </p>
         </div>
 
         {/* Features Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((feature, index) => (
-            <motion.div
+            <div
               key={feature.title}
-              variants={cardVariants}
               className="feature-card rounded-2xl group"
               data-testid={`feature-card-${index}`}
             >
@@ -140,9 +99,9 @@ export const Features = () => {
                 className="mt-6 h-px w-0 group-hover:w-full transition-all duration-500"
                 style={{ background: `linear-gradient(90deg, ${feature.color}, transparent)` }}
               />
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

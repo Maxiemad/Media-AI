@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import { Twitter, Instagram, Youtube, Linkedin, Github } from 'lucide-react';
 
 const socialLinks = [
@@ -27,36 +26,19 @@ export const Footer = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-12">
           {/* Brand */}
           <div className="space-y-6">
-            <motion.h3
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              className="font-syne text-3xl font-bold tracking-tighter"
-            >
+            <h3 className="font-syne text-3xl font-bold tracking-tighter">
               <span className="text-cyan-400">AETHER</span>
               <span className="text-violet-400">X</span>
-            </motion.h3>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="text-gray-500 max-w-xs"
-            >
+            </h3>
+            <p className="text-gray-500 max-w-xs">
               Where Intelligence Meets Imagination. 
               The future of AI-powered creativity.
-            </motion.p>
+            </p>
           </div>
 
           {/* Links */}
           <div className="lg:justify-self-center">
-            <motion.nav
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className="flex flex-wrap gap-6"
-            >
+            <nav className="flex flex-wrap gap-6">
               {footerLinks.map((link) => (
                 <a
                   key={link.label}
@@ -67,53 +49,38 @@ export const Footer = () => {
                   {link.label}
                 </a>
               ))}
-            </motion.nav>
+            </nav>
           </div>
 
           {/* Social */}
           <div className="lg:justify-self-end">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-              className="flex gap-4"
-              data-testid="social-links"
-            >
+            <div className="flex gap-4" data-testid="social-links">
               {socialLinks.map((social) => (
-                <motion.a
+                <a
                   key={social.label}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="social-icon"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
                   aria-label={social.label}
                   data-testid={`social-${social.label.toLowerCase()}`}
                 >
                   <social.icon className="w-5 h-5" strokeWidth={1.5} />
-                </motion.a>
+                </a>
               ))}
-            </motion.div>
+            </div>
           </div>
         </div>
 
         {/* Bottom bar */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.4 }}
-          className="pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4"
-        >
+        <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-gray-600 text-sm">
             © {new Date().getFullYear()} AetherX. All rights reserved.
           </p>
           <p className="text-gray-700 text-xs font-mono">
             v0.1.0-alpha
           </p>
-        </motion.div>
+        </div>
       </div>
     </footer>
   );
