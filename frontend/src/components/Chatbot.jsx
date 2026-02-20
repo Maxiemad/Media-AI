@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { MessageCircle, X, Send, Loader2, Trash2 } from 'lucide-react';
 import axios from 'axios';
+import ReactDOM from 'react-dom';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -109,12 +110,20 @@ export const Chatbot = () => {
     }
   };
 
-  return (
-    <>
+  // Use portal to render outside of any transform containers
+  const chatbotContent = (
+    <div id="chatbot-container" style={{ position: 'fixed', zIndex: 99999, bottom: 0, right: 0, pointerEvents: 'none' }}>
       {/* Chat Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-cyan-500 hover:bg-cyan-400 rounded-full flex items-center justify-center shadow-lg shadow-cyan-500/30 transition-all hover:scale-105 hover:shadow-cyan-500/50"
+        style={{
+          position: 'fixed',
+          bottom: '24px',
+          right: '24px',
+          zIndex: 99999,
+          pointerEvents: 'auto'
+        }}
+        className="w-14 h-14 bg-cyan-500 hover:bg-cyan-400 rounded-full flex items-center justify-center shadow-lg shadow-cyan-500/30 transition-all hover:scale-105 hover:shadow-cyan-500/50"
         data-testid="chatbot-toggle"
       >
         {isOpen ? (
@@ -127,7 +136,14 @@ export const Chatbot = () => {
       {/* Chat Window */}
       {isOpen && (
         <div 
-          className="fixed bottom-24 right-6 z-50 w-80 sm:w-96 bg-[#0a0a0a] border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
+          style={{
+            position: 'fixed',
+            bottom: '96px',
+            right: '24px',
+            zIndex: 99999,
+            pointerEvents: 'auto'
+          }}
+          className="w-80 sm:w-96 bg-[#0a0a0a] border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
           data-testid="chatbot-window"
         >
           {/* Header */}
@@ -214,6 +230,9 @@ export const Chatbot = () => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
+
+  // Render via portal to document.body to escape any transforms
+  return ReactDOM.createPortal(chatbotContent, document.body);
 };
