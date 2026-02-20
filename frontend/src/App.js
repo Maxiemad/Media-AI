@@ -14,38 +14,42 @@ import { Toaster } from "@/components/ui/sonner";
 
 function App() {
   return (
-    <SmoothScroll>
-      <div className="relative min-h-screen bg-[#030305]">
-        <NoiseOverlay />
-        <Navbar />
-        
-        <main>
-          <Hero />
+    <>
+      {/* Chatbot outside all containers for proper fixed positioning */}
+      <Chatbot />
+      
+      <SmoothScroll>
+        <div className="relative min-h-screen bg-[#030305]">
+          <NoiseOverlay />
+          <Navbar />
           
-          <div id="features">
-            <Features />
-          </div>
+          <main>
+            <Hero />
+            
+            <div id="features">
+              <Features />
+            </div>
+            
+            <div id="story">
+              <Story />
+            </div>
+            
+            <Countdown />
+            
+            <div id="gallery">
+              <Gallery />
+            </div>
+            
+            <div id="waitlist">
+              <Newsletter />
+            </div>
+          </main>
           
-          <div id="story">
-            <Story />
-          </div>
-          
-          <Countdown />
-          
-          <div id="gallery">
-            <Gallery />
-          </div>
-          
-          <div id="waitlist">
-            <Newsletter />
-          </div>
-        </main>
-        
-        <Footer />
-        <Chatbot />
-        <Toaster position="bottom-right" />
-      </div>
-    </SmoothScroll>
+          <Footer />
+          <Toaster position="bottom-right" />
+        </div>
+      </SmoothScroll>
+    </>
   );
 }
 
