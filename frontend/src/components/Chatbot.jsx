@@ -112,18 +112,11 @@ export const Chatbot = () => {
 
   // Use portal to render outside of any transform containers
   const chatbotContent = (
-    <div id="chatbot-container" style={{ position: 'fixed', zIndex: 99999, bottom: 0, right: 0, pointerEvents: 'none' }}>
+    <>
       {/* Chat Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        style={{
-          position: 'fixed',
-          bottom: '24px',
-          right: '24px',
-          zIndex: 99999,
-          pointerEvents: 'auto'
-        }}
-        className="w-14 h-14 bg-cyan-500 hover:bg-cyan-400 rounded-full flex items-center justify-center shadow-lg shadow-cyan-500/30 transition-all hover:scale-105 hover:shadow-cyan-500/50"
+        className="chatbot-button"
         data-testid="chatbot-toggle"
       >
         {isOpen ? (
@@ -136,14 +129,7 @@ export const Chatbot = () => {
       {/* Chat Window */}
       {isOpen && (
         <div 
-          style={{
-            position: 'fixed',
-            bottom: '96px',
-            right: '24px',
-            zIndex: 99999,
-            pointerEvents: 'auto'
-          }}
-          className="w-80 sm:w-96 bg-[#0a0a0a] border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
+          className="chatbot-window"
           data-testid="chatbot-window"
         >
           {/* Header */}
@@ -230,7 +216,7 @@ export const Chatbot = () => {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 
   // Render via portal to document.body to escape any transforms
