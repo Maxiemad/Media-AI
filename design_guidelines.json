@@ -1,0 +1,123 @@
+{
+  "project_name": "AetherX",
+  "design_philosophy": {
+    "identity": "E1: The Anti-AI Designer",
+    "core_principles": [
+      "Fusion over Imitation: Mix cinematic sci-fi with high-fashion editorial layouts.",
+      "Emotion First: Evoke mystery, awe, and anticipation.",
+      "Content is King: Every section is a scene in a movie.",
+      "Negative Space: Use deep void space to make neon elements pop.",
+      "Contrast: High contrast is mandatory (Light vs Void)."
+    ],
+    "hall_of_shame": [
+      "No purple/teal gradients for CTAs (Use solid Electric Cyan or Neon Violet).",
+      "No 'Inter' for headings.",
+      "No centered layouts everywhere (Use asymmetry).",
+      "No default 'Bootstrap' grids."
+    ]
+  },
+  "theme": {
+    "mode": "dark",
+    "colors": {
+      "background": "#030305",
+      "surface": "#0A0A0A",
+      "surface_highlight": "#151515",
+      "primary": "#00F0FF",
+      "primary_foreground": "#000000",
+      "secondary": "#7000FF",
+      "secondary_foreground": "#FFFFFF",
+      "accent": "#FF003C",
+      "text_primary": "#FFFFFF",
+      "text_secondary": "#A1A1AA",
+      "border": "rgba(255, 255, 255, 0.1)"
+    },
+    "typography": {
+      "font_family_heading": "Syne, sans-serif",
+      "font_family_body": "Space Grotesk, sans-serif",
+      "font_family_code": "JetBrains Mono, monospace",
+      "scale": {
+        "h1": "text-6xl md:text-8xl font-bold tracking-tighter uppercase",
+        "h2": "text-4xl md:text-6xl font-bold tracking-tight",
+        "h3": "text-2xl md:text-3xl font-semibold",
+        "body": "text-base md:text-lg leading-relaxed text-gray-400",
+        "caption": "text-xs tracking-[0.2em] uppercase text-cyan-500"
+      }
+    }
+  },
+  "layout_strategy": {
+    "grid_system": "The 'Tetris' Grid (Mode A)",
+    "spacing": "Generous (2x standard). Use p-8, p-12, p-24.",
+    "container_width": "max-w-7xl mx-auto px-6",
+    "scrollytelling": "Sections must flow into each other. Use sticky positioning for text while images scroll."
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-cyan-400 text-black hover:bg-cyan-300 font-bold uppercase tracking-wider px-8 py-4 rounded-none clip-path-polygon",
+      "secondary": "border border-cyan-500/50 text-cyan-400 hover:bg-cyan-950/30 uppercase tracking-wider px-8 py-4 rounded-none"
+    },
+    "cards": {
+      "feature": "bg-black/40 backdrop-blur-xl border border-white/10 hover:border-cyan-500/50 transition-all duration-300 p-8 rounded-xl",
+      "glass": "bg-white/5 backdrop-blur-2xl border border-white/10 shadow-2xl"
+    },
+    "inputs": {
+      "style": "bg-transparent border-b border-white/20 focus:border-cyan-500 text-white placeholder-gray-600 px-0 py-4 rounded-none focus:ring-0 transition-colors"
+    }
+  },
+  "visual_enhancers": {
+    "gradients": "Radial gradients for spotlights only (e.g., bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-cyan-900/20 via-black to-black).",
+    "shadows": "Glow effects: shadow-[0_0_20px_rgba(0,240,255,0.3)]",
+    "borders": "1px solid rgba(255, 255, 255, 0.1)",
+    "textures": "Add a subtle noise overlay to the entire body background."
+  },
+  "motion": {
+    "library": "framer-motion",
+    "guidelines": [
+      "Use 'Lenis' for smooth scrolling.",
+      "Parallax: Elements move at different speeds (y: [0, -100]).",
+      "Reveal: Staggered fade-up for lists.",
+      "Hover: Scale up slightly (1.02) and glow.",
+      "Text: Reveal words character by character for dramatic effect."
+    ]
+  },
+  "assets": {
+    "images": [
+      {
+        "category": "Hero Background",
+        "url": "https://images.pexels.com/photos/18068747/pexels-photo-18068747.png",
+        "alt": "Abstract AI Neural Network"
+      },
+      {
+        "category": "Story Section",
+        "url": "https://images.pexels.com/photos/7662608/pexels-photo-7662608.jpeg",
+        "alt": "Cinematic Astronaut"
+      },
+      {
+        "category": "Feature 1",
+        "url": "https://images.pexels.com/photos/18068778/pexels-photo-18068778.png",
+        "alt": "Abstract 3D Shape"
+      },
+      {
+        "category": "Gallery/Fashion",
+        "url": "https://images.pexels.com/photos/8108085/pexels-photo-8108085.jpeg",
+        "alt": "Cyberpunk Fashion"
+      }
+    ],
+    "icons": "lucide-react (Use thin strokes: stroke-width={1.5})"
+  },
+  "universal_guidelines": [
+    "Do NOT use 'transition: all'. Animate specific properties.",
+    "Do NOT center align the app container.",
+    "Dark colors look good when used independently without gradients.",
+    "Use 'sonner' for toasts.",
+    "Ensure all interactive elements have data-testid attributes."
+  ],
+  "instructions_to_main_agent": [
+    "Install 'framer-motion', 'lenis', 'clsx', 'tailwind-merge' if not present.",
+    "Use 'Syne' font from Google Fonts. Add import to index.css.",
+    "Create a 'Noise' component that overlays the screen with a fixed grain texture opacity-5.",
+    "Implement a 'MagneticButton' component using framer-motion.",
+    "The Hero section must have a video background or the abstract image with a slow zoom effect.",
+    "The 'Countdown' must be big, utilizing the 'Syne' font.",
+    "Gallery should use the 'Bento Grid' layout defined in the design system."
+  ]
+}
