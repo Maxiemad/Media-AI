@@ -1,5 +1,4 @@
-import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Brain, Cpu, Sparkles, Zap, Globe, Shield } from 'lucide-react';
 
 const features = [
@@ -42,42 +41,32 @@ const features = [
 ];
 
 export const Features = () => {
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
-
-  const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
-
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.1 }
+      transition: { staggerChildren: 0.08 }
     }
   };
 
   const cardVariants = {
-    hidden: { opacity: 0, y: 40 },
+    hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+      transition: { duration: 0.4, ease: "easeOut" }
     }
   };
 
   return (
     <section 
-      ref={containerRef}
       className="relative py-32 overflow-hidden"
       data-testid="features-section"
     >
       {/* Background Gradient */}
       <div className="absolute inset-0 spotlight opacity-50" />
 
-      <motion.div style={{ opacity }} className="aether-container">
+      <div className="aether-container">
         {/* Section Header */}
         <div className="text-left mb-20 max-w-3xl">
           <motion.p
@@ -123,7 +112,6 @@ export const Features = () => {
               key={feature.title}
               variants={cardVariants}
               className="feature-card rounded-2xl group"
-              style={{ y: index % 2 === 0 ? y : undefined }}
               data-testid={`feature-card-${index}`}
             >
               <div 
@@ -155,7 +143,7 @@ export const Features = () => {
             </motion.div>
           ))}
         </motion.div>
-      </motion.div>
+      </div>
     </section>
   );
 };
