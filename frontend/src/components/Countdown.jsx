@@ -3,6 +3,37 @@ import { useState, useEffect } from 'react';
 // Set launch date to 30 days from now for demo
 const LAUNCH_DATE = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
 
+const CountdownBlock = ({ value, label, delay }) => {
+  return (
+    <div 
+      className="countdown-block-3d text-center"
+      style={{ animationDelay: `${delay}s` }}
+    >
+      {/* 3D Number Container */}
+      <div className="relative" style={{ perspective: '500px' }}>
+        {/* Glow */}
+        <div className="absolute inset-0 blur-2xl bg-cyan-500/20 rounded-full" />
+        
+        {/* 3D Number */}
+        <div 
+          className="countdown-digit-3d relative"
+          style={{ 
+            transformStyle: 'preserve-3d',
+            transform: 'rotateX(10deg)'
+          }}
+        >
+          {String(value).padStart(2, '0')}
+        </div>
+      </div>
+      
+      {/* Label */}
+      <p className="countdown-label mt-4">
+        {label}
+      </p>
+    </div>
+  );
+};
+
 export const Countdown = () => {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
@@ -31,8 +62,6 @@ export const Countdown = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const formatNumber = (num) => String(num).padStart(2, '0');
-
   const timeBlocks = [
     { label: 'Days', value: timeLeft.days },
     { label: 'Hours', value: timeLeft.hours },
@@ -42,12 +71,29 @@ export const Countdown = () => {
 
   return (
     <section 
-      className="relative py-32 overflow-hidden"
+      className="relative py-32 overflow-hidden scene-3d"
       data-testid="countdown-section"
     >
-      {/* Background */}
+      {/* 3D Background */}
       <div className="absolute inset-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-gradient-to-r from-cyan-900/10 to-violet-900/10 blur-3xl" />
+        {/* Central orb */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px]">
+          <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-900/10 to-violet-900/10 blur-3xl animate-pulse" />
+        </div>
+        
+        {/* 3D Grid */}
+        <div 
+          className="absolute inset-0 opacity-20"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(0, 240, 255, 0.1) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(0, 240, 255, 0.1) 1px, transparent 1px)
+            `,
+            backgroundSize: '100px 100px',
+            transform: 'perspective(500px) rotateX(60deg)',
+            transformOrigin: 'center top'
+          }}
+        />
       </div>
 
       <div className="aether-container relative z-10">
@@ -57,32 +103,26 @@ export const Countdown = () => {
             Mark Your Calendar
           </p>
           <h2
-            className="section-title text-4xl md:text-6xl"
+            className="section-title text-4xl md:text-6xl text-3d-subtle"
             data-testid="countdown-title"
           >
             Launch <span className="text-cyan-400">Imminent</span>
           </h2>
         </div>
 
-        {/* Countdown Display */}
+        {/* 3D Countdown Display */}
         <div
-          className="flex justify-center items-center gap-4 md:gap-8 lg:gap-12"
+          className="flex justify-center items-center gap-4 md:gap-8 lg:gap-16"
           data-testid="countdown-display"
+          style={{ perspective: '1000px' }}
         >
-          {timeBlocks.map((block) => (
-            <div key={block.label} className="text-center">
-              <div className="relative">
-                <div 
-                  className="countdown-digit"
-                  data-testid={`countdown-${block.label.toLowerCase()}`}
-                >
-                  {formatNumber(block.value)}
-                </div>
-              </div>
-              <p className="countdown-label mt-4">
-                {block.label}
-              </p>
-            </div>
+          {timeBlocks.map((block, index) => (
+            <CountdownBlock 
+              key={block.label}
+              value={block.value}
+              label={block.label}
+              delay={index * 0.1}
+            />
           ))}
         </div>
 
@@ -94,6 +134,10 @@ export const Countdown = () => {
             day: 'numeric' 
           })}
         </p>
+
+        {/* 3D Decorative lines */}
+        <div className="absolute top-1/2 left-0 w-32 h-px bg-gradient-to-r from-transparent to-cyan-500/50" />
+        <div className="absolute top-1/2 right-0 w-32 h-px bg-gradient-to-l from-transparent to-violet-500/50" />
       </div>
     </section>
   );
