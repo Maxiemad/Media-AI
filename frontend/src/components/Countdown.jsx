@@ -1,7 +1,11 @@
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 
-// Set launch date to 30 days from now for demo
-const LAUNCH_DATE = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
+
+// Default launch date: 30 days from now
+const getDefaultLaunchDate = () => new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
 
 const CountdownBlock = ({ value, label, delay }) => {
   return (
@@ -35,6 +39,7 @@ const CountdownBlock = ({ value, label, delay }) => {
 };
 
 export const Countdown = () => {
+  const [launchDate, setLaunchDate] = useState(getDefaultLaunchDate());
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -42,9 +47,24 @@ export const Countdown = () => {
     seconds: 0
   });
 
+  // Fetch launch date from backend
+  useEffect(() => {
+    const fetchLaunchDate = async () => {
+      try {
+        const response = await axios.get(`${API}/launch/config`);
+        if (response.data.launch_date) {
+          setLaunchDate(new Date(response.data.launch_date));
+        }
+      } catch (error) {
+        console.log('Using default launch date');
+      }
+    };
+    fetchLaunchDate();
+  }, []);
+
   useEffect(() => {
     const calculateTimeLeft = () => {
-      const difference = LAUNCH_DATE.getTime() - new Date().getTime();
+      const difference = launchDate.getTime() - new Date().getTime();
       
       if (difference > 0) {
         setTimeLeft({
@@ -53,6 +73,8 @@ export const Countdown = () => {
           minutes: Math.floor((difference / 1000 / 60) % 60),
           seconds: Math.floor((difference / 1000) % 60)
         });
+      } else {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
       }
     };
 
@@ -60,7 +82,7 @@ export const Countdown = () => {
     const timer = setInterval(calculateTimeLeft, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [launchDate]);
 
   const timeBlocks = [
     { label: 'Days', value: timeLeft.days },
@@ -68,6 +90,9 @@ export const Countdown = () => {
     { label: 'Minutes', value: timeLeft.minutes },
     { label: 'Seconds', value: timeLeft.seconds }
   ];
+
+  const isLaunched = timeLeft.days === 0 && timeLeft.hours === 0 && 
+                     timeLeft.minutes === 0 && timeLeft.seconds === 0;
 
   return (
     <section 
@@ -100,39 +125,49 @@ export const Countdown = () => {
         {/* Section Header */}
         <div className="text-center mb-16">
           <p className="text-xs tracking-[0.3em] uppercase text-cyan-400 mb-4">
-            Mark Your Calendar
+            {isLaunched ? 'We Have Launched!' : 'Mark Your Calendar'}
           </p>
           <h2
             className="section-title text-4xl md:text-6xl text-3d-subtle"
             data-testid="countdown-title"
           >
-            Launch <span className="text-cyan-400">Imminent</span>
+            {isLaunched ? (
+              <span className="text-cyan-400">AetherX is Live!</span>
+            ) : (
+              <>Launch <span className="text-cyan-400">Imminent</span></>
+            )}
           </h2>
         </div>
 
         {/* 3D Countdown Display */}
-        <div
-          className="flex justify-center items-center gap-4 md:gap-8 lg:gap-16"
-          data-testid="countdown-display"
-          style={{ perspective: '1000px' }}
-        >
-          {timeBlocks.map((block, index) => (
-            <CountdownBlock 
-              key={block.label}
-              value={block.value}
-              label={block.label}
-              delay={index * 0.1}
-            />
-          ))}
-        </div>
+        {!isLaunched && (
+          <div
+            className="flex justify-center items-center gap-4 md:gap-8 lg:gap-16"
+            data-testid="countdown-display"
+            style={{ perspective: '1000px' }}
+          >
+            {timeBlocks.map((block, index) => (
+              <CountdownBlock 
+                key={block.label}
+                value={block.value}
+                label={block.label}
+                delay={index * 0.1}
+              />
+            ))}
+          </div>
+        )}
 
         {/* Launch Date Text */}
         <p className="text-center text-gray-500 mt-12 text-sm tracking-wide">
-          Official Launch: {LAUNCH_DATE.toLocaleDateString('en-US', { 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric' 
-          })}
+          {isLaunched ? (
+            'Thank you for waiting! Explore AetherX now.'
+          ) : (
+            `Official Launch: ${launchDate.toLocaleDateString('en-US', { 
+              year: 'numeric', 
+              month: 'long', 
+              day: 'numeric' 
+            })}`
+          )}
         </p>
 
         {/* 3D Decorative lines */}

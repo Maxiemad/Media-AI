@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { ArrowRight, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { ArrowRight, Loader2, CheckCircle, AlertCircle, Users } from 'lucide-react';
 import axios from 'axios';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -10,6 +10,24 @@ export const Newsletter = () => {
   const [name, setName] = useState('');
   const [status, setStatus] = useState('idle');
   const [message, setMessage] = useState('');
+  const [subscriberCount, setSubscriberCount] = useState(0);
+
+  // Fetch subscriber count on mount
+  useEffect(() => {
+    const fetchCount = async () => {
+      try {
+        const response = await axios.get(`${API}/newsletter/count`);
+        setSubscriberCount(response.data.count);
+      } catch (error) {
+        console.log('Could not fetch subscriber count');
+      }
+    };
+    fetchCount();
+    
+    // Refresh count every 30 seconds
+    const interval = setInterval(fetchCount, 30000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,6 +47,7 @@ export const Newsletter = () => {
         setMessage(response.data.message);
         setEmail('');
         setName('');
+        setSubscriberCount(prev => prev + 1);
       } else {
         setStatus('error');
         setMessage(response.data.message);
@@ -46,7 +65,7 @@ export const Newsletter = () => {
 
   return (
     <section 
-      className="relative py-32 overflow-hidden"
+      className="relative py-32 overflow-hidden scene-3d"
       data-testid="newsletter-section"
     >
       {/* Background */}
@@ -64,16 +83,29 @@ export const Newsletter = () => {
           </p>
           
           <h2
-            className="section-title text-4xl md:text-6xl mb-6"
+            className="section-title text-4xl md:text-6xl mb-6 text-3d-subtle"
             data-testid="newsletter-title"
           >
             Join the <span className="text-cyan-400">Waitlist</span>
           </h2>
           
-          <p className="text-gray-400 text-lg mb-12 max-w-xl mx-auto">
+          <p className="text-gray-400 text-lg mb-8 max-w-xl mx-auto">
             Get exclusive early access and be among the first to experience 
             AetherX when we launch. No spam, just breakthrough moments.
           </p>
+
+          {/* Live Subscriber Count */}
+          {subscriberCount > 0 && (
+            <div 
+              className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 mb-8"
+              data-testid="subscriber-count"
+            >
+              <Users className="w-4 h-4 text-cyan-400" />
+              <span className="text-sm text-gray-300">
+                <span className="font-bold text-cyan-400">{subscriberCount.toLocaleString()}</span> people already on the waitlist
+              </span>
+            </div>
+          )}
 
           {/* Form */}
           <form
@@ -108,7 +140,7 @@ export const Newsletter = () => {
               <button
                 type="submit"
                 disabled={status === 'loading' || !email}
-                className="btn-primary flex items-center justify-center gap-2 min-w-[180px] disabled:opacity-50 disabled:cursor-not-allowed"
+                className="btn-primary btn-3d flex items-center justify-center gap-2 min-w-[180px] disabled:opacity-50 disabled:cursor-not-allowed"
                 data-testid="newsletter-submit-btn"
               >
                 {status === 'loading' ? (
@@ -128,7 +160,7 @@ export const Newsletter = () => {
             {/* Status Messages */}
             {status === 'success' && (
               <div
-                className="flex items-center justify-center gap-2 text-cyan-400"
+                className="flex items-center justify-center gap-2 text-cyan-400 animate-fade-in"
                 data-testid="newsletter-success"
               >
                 <CheckCircle className="w-5 h-5" />
@@ -138,7 +170,7 @@ export const Newsletter = () => {
             
             {status === 'error' && (
               <div
-                className="flex items-center justify-center gap-2 text-red-400"
+                className="flex items-center justify-center gap-2 text-red-400 animate-fade-in"
                 data-testid="newsletter-error"
               >
                 <AlertCircle className="w-5 h-5" />
