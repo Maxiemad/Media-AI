@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { MessageCircle, X, Send, Loader2, Trash2 } from 'lucide-react';
+import { createPortal } from 'react-dom';
+import { MessageCircle, X, Send, Loader2, Trash2, Sparkles } from 'lucide-react';
 import axios from 'axios';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -13,6 +14,19 @@ const getSessionId = () => {
     localStorage.setItem('aetherx_chat_session', sessionId);
   }
   return sessionId;
+};
+
+// Chatbot Portal - renders directly to document.body to escape all stacking contexts
+const ChatbotPortal = ({ children }) => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
+
+  if (!mounted) return null;
+  return createPortal(children, document.body);
 };
 
 export const Chatbot = () => {
@@ -108,36 +122,61 @@ export const Chatbot = () => {
     }
   };
 
+  // Using portal to render outside the main app's transform/perspective context
   return (
-    <>
-      {/* Chat Button - Always visible */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="chatbot-button"
-        data-testid="chatbot-toggle"
-        aria-label="Open chat"
+    <ChatbotPortal>
+      {/* Fixed Chatbot Container */}
+      <div 
+        className="chatbot-fixed-wrapper"
+        data-testid="chatbot-container"
+        style={{
+          position: 'fixed',
+          bottom: '24px',
+          right: '24px',
+          zIndex: 2147483647,
+          pointerEvents: 'auto'
+        }}
       >
-        {isOpen ? (
-          <X className="w-6 h-6 text-black" />
-        ) : (
-          <MessageCircle className="w-6 h-6 text-black" />
-        )}
-      </button>
+        {/* Chat Button - Modern floating design with animations */}
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className={`chatbot-toggle-btn ${isOpen ? 'is-open' : ''}`}
+          data-testid="chatbot-toggle"
+          aria-label={isOpen ? "Close chat" : "Open chat"}
+        >
+          {/* Animated rings */}
+          <span className="chatbot-ring chatbot-ring-1" />
+          <span className="chatbot-ring chatbot-ring-2" />
+          
+          {/* Icon container */}
+          <span className="chatbot-icon-wrapper">
+            {isOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <>
+                <MessageCircle className="w-6 h-6 chatbot-icon-main" />
+                <Sparkles className="w-3 h-3 chatbot-icon-sparkle" />
+              </>
+            )}
+          </span>
+        </button>
 
-      {/* Chat Window */}
-      {isOpen && (
-        <div className="chatbot-window" data-testid="chatbot-window">
+        {/* Chat Window with smooth expand animation */}
+        <div 
+          className={`chatbot-window-container ${isOpen ? 'is-visible' : ''}`}
+          data-testid="chatbot-window"
+        >
           {/* Header */}
-          <div className="bg-gradient-to-r from-cyan-600 to-violet-600 p-4">
+          <div className="chatbot-header">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                <div className="chatbot-avatar">
                   <MessageCircle className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-syne font-bold text-white">AetherX Assistant</h3>
+                  <h3 className="font-syne font-bold text-white text-sm">AetherX Assistant</h3>
                   <p className="text-xs text-white/70 flex items-center gap-1">
-                    <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                    <span className="chatbot-status-dot" />
                     AI Powered
                   </p>
                 </div>
@@ -146,6 +185,7 @@ export const Chatbot = () => {
                 onClick={clearHistory}
                 className="p-2 hover:bg-white/10 rounded-lg transition-colors"
                 title="Clear chat"
+                data-testid="chatbot-clear"
               >
                 <Trash2 className="w-4 h-4 text-white/70" />
               </button>
@@ -153,17 +193,15 @@ export const Chatbot = () => {
           </div>
 
           {/* Messages */}
-          <div className="h-80 overflow-y-auto p-4 space-y-4" data-testid="chatbot-messages">
+          <div className="chatbot-messages" data-testid="chatbot-messages">
             {messages.map((msg) => (
               <div
                 key={msg.id}
                 className={`flex ${msg.isBot ? 'justify-start' : 'justify-end'}`}
               >
                 <div
-                  className={`max-w-[85%] p-3 rounded-2xl text-sm ${
-                    msg.isBot
-                      ? 'bg-white/5 text-gray-300 rounded-tl-none'
-                      : 'bg-cyan-600 text-white rounded-tr-none'
+                  className={`chatbot-message ${
+                    msg.isBot ? 'chatbot-message-bot' : 'chatbot-message-user'
                   }`}
                 >
                   {msg.text}
@@ -172,7 +210,7 @@ export const Chatbot = () => {
             ))}
             {isLoading && (
               <div className="flex justify-start">
-                <div className="bg-white/5 text-gray-300 p-3 rounded-2xl rounded-tl-none">
+                <div className="chatbot-message chatbot-message-bot">
                   <div className="flex items-center gap-2">
                     <Loader2 className="w-4 h-4 animate-spin" />
                     <span className="text-sm">Thinking...</span>
@@ -184,7 +222,7 @@ export const Chatbot = () => {
           </div>
 
           {/* Input */}
-          <div className="p-4 border-t border-white/10">
+          <div className="chatbot-input-area">
             <div className="flex gap-2">
               <input
                 type="text"
@@ -193,24 +231,24 @@ export const Chatbot = () => {
                 onKeyPress={handleKeyPress}
                 placeholder="Ask about AetherX..."
                 disabled={isLoading}
-                className="flex-1 bg-white/5 border border-white/10 rounded-full px-4 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 disabled:opacity-50"
+                className="chatbot-input"
                 data-testid="chatbot-input"
               />
               <button
                 onClick={handleSend}
                 disabled={isLoading || !input.trim()}
-                className="w-10 h-10 bg-cyan-500 hover:bg-cyan-400 disabled:bg-cyan-500/50 rounded-full flex items-center justify-center transition-colors disabled:cursor-not-allowed"
+                className="chatbot-send-btn"
                 data-testid="chatbot-send"
               >
-                <Send className="w-4 h-4 text-black" />
+                <Send className="w-4 h-4" />
               </button>
             </div>
-            <p className="text-xs text-gray-600 text-center mt-2">
+            <p className="text-xs text-gray-500 text-center mt-2">
               Powered by AetherX AI
             </p>
           </div>
         </div>
-      )}
-    </>
+      </div>
+    </ChatbotPortal>
   );
 };
