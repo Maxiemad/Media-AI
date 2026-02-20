@@ -6,7 +6,7 @@ from datetime import datetime
 class AetherXAPITester:
     def __init__(self):
         # Use the public backend URL from environment
-        self.base_url = "https://cinematic-scroll-172.preview.emergentagent.com/api"
+        self.base_url = "https://aether-launch-kit.preview.emergentagent.com/api"
         self.tests_run = 0
         self.tests_passed = 0
         self.test_results = []
