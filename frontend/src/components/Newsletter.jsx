@@ -47,11 +47,11 @@ export const Newsletter = () => {
       setMessage(error.response?.data?.detail || 'Something went wrong. Please try again.');
     }
 
-    // Reset status after 5 seconds
+    // Reset status after 8 seconds for better readability
     setTimeout(() => {
       setStatus('idle');
       setMessage('');
-    }, 5000);
+    }, 8000);
   };
 
   return (
