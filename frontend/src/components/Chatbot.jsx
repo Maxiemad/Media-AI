@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { MessageCircle, X, Send, Loader2, Trash2 } from 'lucide-react';
 import axios from 'axios';
-import ReactDOM from 'react-dom';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -38,7 +37,6 @@ export const Chatbot = () => {
     scrollToBottom();
   }, [messages]);
 
-  // Load chat history on mount
   useEffect(() => {
     const loadHistory = async () => {
       try {
@@ -49,7 +47,7 @@ export const Chatbot = () => {
             text: msg.content,
             isBot: msg.role === 'assistant'
           }));
-          setMessages([messages[0], ...historyMessages]);
+          setMessages(prev => [prev[0], ...historyMessages]);
         }
       } catch (error) {
         console.log('No previous chat history');
@@ -110,14 +108,14 @@ export const Chatbot = () => {
     }
   };
 
-  // Use portal to render outside of any transform containers
-  const chatbotContent = (
+  return (
     <>
-      {/* Chat Button */}
+      {/* Chat Button - Always visible */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="chatbot-button"
         data-testid="chatbot-toggle"
+        aria-label="Open chat"
       >
         {isOpen ? (
           <X className="w-6 h-6 text-black" />
@@ -128,10 +126,7 @@ export const Chatbot = () => {
 
       {/* Chat Window */}
       {isOpen && (
-        <div 
-          className="chatbot-window"
-          data-testid="chatbot-window"
-        >
+        <div className="chatbot-window" data-testid="chatbot-window">
           {/* Header */}
           <div className="bg-gradient-to-r from-cyan-600 to-violet-600 p-4">
             <div className="flex items-center justify-between">
@@ -218,7 +213,4 @@ export const Chatbot = () => {
       )}
     </>
   );
-
-  // Render via portal to document.body to escape any transforms
-  return ReactDOM.createPortal(chatbotContent, document.body);
 };

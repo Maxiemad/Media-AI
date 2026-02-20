@@ -14,8 +14,8 @@ import { Toaster } from "@/components/ui/sonner";
 
 function App() {
   return (
-    <>
-      {/* Chatbot outside all containers for proper fixed positioning */}
+    <div className="relative">
+      {/* Chatbot rendered at root level for proper fixed positioning */}
       <Chatbot />
       
       <SmoothScroll>
@@ -49,7 +49,7 @@ function App() {
           <Toaster position="bottom-right" />
         </div>
       </SmoothScroll>
-    </>
+    </div>
   );
 }
 
