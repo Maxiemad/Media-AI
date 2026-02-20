@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Play, X } from 'lucide-react';
 
@@ -6,43 +6,22 @@ const HERO_IMAGE = "https://images.pexels.com/photos/18068747/pexels-photo-18068
 
 export const Hero = () => {
   const [showVideo, setShowVideo] = useState(false);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePos({
-        x: (e.clientX / window.innerWidth - 0.5) * 20,
-        y: (e.clientY / window.innerHeight - 0.5) * 20,
-      });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.15, delayChildren: 0.3 }
+      transition: { staggerChildren: 0.12, delayChildren: 0.2 }
     }
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 60 },
+    hidden: { opacity: 0, y: 40 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] }
+      transition: { duration: 0.6, ease: "easeOut" }
     }
-  };
-
-  const letterVariants = {
-    hidden: { opacity: 0, y: 100 },
-    visible: (i) => ({
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, delay: i * 0.05, ease: [0.22, 1, 0.36, 1] }
-    })
   };
 
   const title = "AETHERX";
@@ -58,34 +37,20 @@ export const Hero = () => {
           src={HERO_IMAGE}
           alt="Abstract AI Neural Network"
           className="hero-image"
-          initial={{ scale: 1.2, opacity: 0 }}
+          initial={{ scale: 1.1, opacity: 0 }}
           animate={{ scale: 1, opacity: 0.6 }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
-          style={{
-            x: mousePos.x,
-            y: mousePos.y,
-          }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
         />
       </div>
 
-      {/* Floating Orbs */}
-      <motion.div
-        className="floating-element floating-orb orb-cyan"
+      {/* Floating Orbs - CSS animation only */}
+      <div
+        className="floating-element floating-orb orb-cyan animate-float"
         style={{ top: '20%', left: '10%' }}
-        animate={{
-          y: [0, -30, 0],
-          x: [0, 15, 0],
-        }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       />
-      <motion.div
-        className="floating-element floating-orb orb-violet"
-        style={{ bottom: '20%', right: '10%' }}
-        animate={{
-          y: [0, 30, 0],
-          x: [0, -15, 0],
-        }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+      <div
+        className="floating-element floating-orb orb-violet animate-float"
+        style={{ bottom: '20%', right: '10%', animationDelay: '3s' }}
       />
 
       {/* Content */}
@@ -108,29 +73,17 @@ export const Hero = () => {
           {/* Title */}
           <div className="overflow-hidden py-2">
             <motion.h1 
+              variants={itemVariants}
               className="font-syne text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter"
               data-testid="hero-title"
+              style={{
+                background: 'linear-gradient(180deg, #00F0FF 0%, #7000FF 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
             >
-              {title.split('').map((letter, i) => (
-                <motion.span
-                  key={i}
-                  custom={i}
-                  variants={letterVariants}
-                  initial="hidden"
-                  animate="visible"
-                  className="inline-block text-glow-cyan"
-                  style={{
-                    background: i < 3 
-                      ? 'linear-gradient(180deg, #00F0FF 0%, #FFFFFF 100%)' 
-                      : 'linear-gradient(180deg, #7000FF 0%, #00F0FF 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                  }}
-                >
-                  {letter}
-                </motion.span>
-              ))}
+              {title}
             </motion.h1>
           </div>
 
