@@ -9,6 +9,7 @@ import { Countdown } from "./components/Countdown";
 import { Gallery } from "./components/Gallery";
 import { Newsletter } from "./components/Newsletter";
 import { Footer } from "./components/Footer";
+import { Chatbot } from "./components/Chatbot";
 import { Toaster } from "@/components/ui/sonner";
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
         </main>
         
         <Footer />
+        <Chatbot />
         <Toaster position="bottom-right" />
       </div>
     </SmoothScroll>
