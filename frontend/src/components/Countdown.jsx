@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 // Set launch date to 30 days from now for demo
 const LAUNCH_DATE = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
@@ -11,14 +11,6 @@ export const Countdown = () => {
     minutes: 0,
     seconds: 0
   });
-
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
-
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 0.8]);
 
   useEffect(() => {
     const calculateTimeLeft = () => {
@@ -51,7 +43,6 @@ export const Countdown = () => {
 
   return (
     <section 
-      ref={containerRef}
       className="relative py-32 overflow-hidden"
       data-testid="countdown-section"
     >
@@ -60,7 +51,7 @@ export const Countdown = () => {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-gradient-to-r from-cyan-900/10 to-violet-900/10 blur-3xl" />
       </div>
 
-      <motion.div style={{ scale }} className="aether-container relative z-10">
+      <div className="aether-container relative z-10">
         {/* Section Header */}
         <div className="text-center mb-16">
           <motion.p
@@ -148,17 +139,13 @@ export const Countdown = () => {
         </motion.p>
 
         {/* Decorative Elements */}
-        <motion.div
-          className="absolute top-1/2 left-8 w-px h-32 bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent"
-          animate={{ opacity: [0.3, 0.7, 0.3] }}
-          transition={{ duration: 3, repeat: Infinity }}
+        <div
+          className="absolute top-1/2 left-8 w-px h-32 bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent opacity-50"
         />
-        <motion.div
-          className="absolute top-1/2 right-8 w-px h-32 bg-gradient-to-b from-transparent via-violet-500/50 to-transparent"
-          animate={{ opacity: [0.3, 0.7, 0.3] }}
-          transition={{ duration: 3, repeat: Infinity, delay: 1.5 }}
+        <div
+          className="absolute top-1/2 right-8 w-px h-32 bg-gradient-to-b from-transparent via-violet-500/50 to-transparent opacity-50"
         />
-      </motion.div>
+      </div>
     </section>
   );
 };
