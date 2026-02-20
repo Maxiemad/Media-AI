@@ -1,0 +1,222 @@
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Play, X } from 'lucide-react';
+
+const HERO_IMAGE = "https://images.pexels.com/photos/18068747/pexels-photo-18068747.png";
+
+export const Hero = () => {
+  const [showVideo, setShowVideo] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePos({
+        x: (e.clientX / window.innerWidth - 0.5) * 20,
+        y: (e.clientY / window.innerHeight - 0.5) * 20,
+      });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.15, delayChildren: 0.3 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 60 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] }
+    }
+  };
+
+  const letterVariants = {
+    hidden: { opacity: 0, y: 100 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, delay: i * 0.05, ease: [0.22, 1, 0.36, 1] }
+    })
+  };
+
+  const title = "AETHERX";
+
+  return (
+    <section 
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      data-testid="hero-section"
+    >
+      {/* Background */}
+      <div className="hero-background">
+        <motion.img
+          src={HERO_IMAGE}
+          alt="Abstract AI Neural Network"
+          className="hero-image"
+          initial={{ scale: 1.2, opacity: 0 }}
+          animate={{ scale: 1, opacity: 0.6 }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+          style={{
+            x: mousePos.x,
+            y: mousePos.y,
+          }}
+        />
+      </div>
+
+      {/* Floating Orbs */}
+      <motion.div
+        className="floating-element floating-orb orb-cyan"
+        style={{ top: '20%', left: '10%' }}
+        animate={{
+          y: [0, -30, 0],
+          x: [0, 15, 0],
+        }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="floating-element floating-orb orb-violet"
+        style={{ bottom: '20%', right: '10%' }}
+        animate={{
+          y: [0, 30, 0],
+          x: [0, -15, 0],
+        }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      {/* Content */}
+      <div className="relative z-10 aether-container text-center">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="space-y-8"
+        >
+          {/* Caption */}
+          <motion.p 
+            variants={itemVariants}
+            className="text-xs tracking-[0.3em] uppercase text-cyan-400 font-space"
+            data-testid="hero-caption"
+          >
+            Introducing the Future
+          </motion.p>
+
+          {/* Title */}
+          <div className="overflow-hidden py-2">
+            <motion.h1 
+              className="font-syne text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter"
+              data-testid="hero-title"
+            >
+              {title.split('').map((letter, i) => (
+                <motion.span
+                  key={i}
+                  custom={i}
+                  variants={letterVariants}
+                  initial="hidden"
+                  animate="visible"
+                  className="inline-block text-glow-cyan"
+                  style={{
+                    background: i < 3 
+                      ? 'linear-gradient(180deg, #00F0FF 0%, #FFFFFF 100%)' 
+                      : 'linear-gradient(180deg, #7000FF 0%, #00F0FF 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}
+                >
+                  {letter}
+                </motion.span>
+              ))}
+            </motion.h1>
+          </div>
+
+          {/* Tagline */}
+          <motion.p 
+            variants={itemVariants}
+            className="text-xl md:text-2xl font-space text-gray-400 max-w-2xl mx-auto"
+            data-testid="hero-tagline"
+          >
+            Where Intelligence Meets Imagination.
+          </motion.p>
+
+          {/* CTA Buttons */}
+          <motion.div 
+            variants={itemVariants}
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8"
+          >
+            <motion.button
+              onClick={() => setShowVideo(true)}
+              className="play-button group"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              data-testid="watch-trailer-btn"
+            >
+              <Play className="w-8 h-8 text-cyan-400 ml-1 group-hover:text-white transition-colors" />
+            </motion.button>
+            <motion.button
+              onClick={() => setShowVideo(true)}
+              className="btn-secondary text-sm"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              data-testid="watch-trailer-text-btn"
+            >
+              Watch Trailer
+            </motion.button>
+          </motion.div>
+
+          {/* Scroll Indicator */}
+          <motion.div 
+            variants={itemVariants}
+            className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          >
+            <motion.div
+              animate={{ y: [0, 10, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+              className="w-6 h-10 border border-white/20 rounded-full flex justify-center pt-2"
+            >
+              <motion.div className="w-1 h-2 bg-cyan-400 rounded-full" />
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      </div>
+
+      {/* Video Modal */}
+      {showVideo && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="video-modal-overlay"
+          onClick={() => setShowVideo(false)}
+          data-testid="video-modal"
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="video-container"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setShowVideo(false)}
+              className="absolute -top-12 right-0 text-white/60 hover:text-white transition-colors"
+              data-testid="close-video-btn"
+            >
+              <X className="w-8 h-8" />
+            </button>
+            <iframe
+              src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
+              title="AetherX Trailer"
+              className="w-full h-full rounded-lg"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </motion.div>
+        </motion.div>
+      )}
+    </section>
+  );
+};
