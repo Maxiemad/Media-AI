@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { ArrowRight, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 import axios from 'axios';
 
@@ -13,12 +13,6 @@ export const Newsletter = () => {
   const [message, setMessage] = useState('');
 
   const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
-
-  const y = useTransform(scrollYProgress, [0, 1], [50, -50]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -66,16 +60,12 @@ export const Newsletter = () => {
       {/* Decorative orbs */}
       <motion.div
         className="absolute top-1/4 -left-32 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl"
-        animate={{ x: [0, 30, 0], y: [0, -20, 0] }}
-        transition={{ duration: 10, repeat: Infinity }}
       />
       <motion.div
         className="absolute bottom-1/4 -right-32 w-64 h-64 bg-violet-500/10 rounded-full blur-3xl"
-        animate={{ x: [0, -30, 0], y: [0, 20, 0] }}
-        transition={{ duration: 12, repeat: Infinity }}
       />
 
-      <motion.div style={{ y }} className="aether-container relative z-10">
+      <div className="aether-container relative z-10">
         <div className="max-w-3xl mx-auto text-center">
           {/* Section Header */}
           <motion.p
@@ -213,7 +203,7 @@ export const Newsletter = () => {
             </div>
           </motion.div>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 };

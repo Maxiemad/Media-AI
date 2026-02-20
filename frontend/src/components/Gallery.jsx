@@ -1,5 +1,4 @@
-import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 const galleryImages = [
   {
@@ -35,23 +34,14 @@ const galleryImages = [
 ];
 
 export const Gallery = () => {
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
-
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
-
   return (
     <section 
-      ref={containerRef}
       className="relative py-32 overflow-hidden"
       data-testid="gallery-section"
     >
       <div className="absolute inset-0 spotlight opacity-30" />
 
-      <motion.div style={{ opacity }} className="aether-container">
+      <div className="aether-container">
         {/* Section Header */}
         <div className="text-left mb-16 max-w-2xl">
           <motion.p
@@ -120,14 +110,8 @@ export const Gallery = () => {
         </motion.div>
 
         {/* Bottom decoration */}
-        <motion.div
-          initial={{ width: 0 }}
-          whileInView={{ width: '100%' }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.5, duration: 1 }}
-          className="h-px bg-gradient-to-r from-cyan-500/50 via-violet-500/50 to-transparent mt-16"
-        />
-      </motion.div>
+        <div className="h-px bg-gradient-to-r from-cyan-500/50 via-violet-500/50 to-transparent mt-16" />
+      </div>
     </section>
   );
 };
