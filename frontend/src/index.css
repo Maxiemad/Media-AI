@@ -33,6 +33,17 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+    perspective: 1000px;
+}
+
+/* 3D Scene Setup */
+.scene-3d {
+    perspective: 1500px;
+    perspective-origin: 50% 50%;
+}
+
+.layer-3d {
+    transform-style: preserve-3d;
 }
 
 .font-syne {
@@ -219,6 +230,60 @@ body {
 
 .animate-bounce-slow {
     animation: bounce-slow 2s ease-in-out infinite;
+}
+
+/* 3D Card Tilt Effect */
+.card-3d {
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease;
+}
+
+.card-3d:hover {
+    transform: rotateX(5deg) rotateY(-5deg) translateZ(20px);
+}
+
+.card-3d-content {
+    transform: translateZ(30px);
+}
+
+/* 3D Floating Animation */
+@keyframes float-3d {
+    0%, 100% { 
+        transform: translateY(0) translateZ(0) rotateX(0deg); 
+    }
+    50% { 
+        transform: translateY(-20px) translateZ(30px) rotateX(5deg); 
+    }
+}
+
+.animate-float-3d {
+    animation: float-3d 6s ease-in-out infinite;
+    transform-style: preserve-3d;
+}
+
+/* 3D Text Effect */
+.text-3d {
+    text-shadow: 
+        1px 1px 0 rgba(0, 240, 255, 0.3),
+        2px 2px 0 rgba(112, 0, 255, 0.2),
+        3px 3px 0 rgba(0, 240, 255, 0.1);
+    transform: perspective(500px) rotateX(5deg);
+}
+
+/* 3D Depth Layers */
+.depth-layer-1 { transform: translateZ(100px); }
+.depth-layer-2 { transform: translateZ(50px); }
+.depth-layer-3 { transform: translateZ(0px); }
+
+/* 3D Rotate on Scroll */
+@keyframes rotate-3d-slow {
+    from { transform: rotateY(0deg) rotateX(10deg); }
+    to { transform: rotateY(360deg) rotateX(10deg); }
+}
+
+.animate-rotate-3d {
+    animation: rotate-3d-slow 20s linear infinite;
+    transform-style: preserve-3d;
 }
 
 /* Bento Grid */
